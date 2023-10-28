@@ -3,6 +3,7 @@ import './App.css';
 import Header from './components/header/header';
 import { Character } from './types/types';
 import Service from './services/service';
+import Main from './components/main/main';
 
 class App extends Component {
   service = new Service();
@@ -30,6 +31,7 @@ class App extends Component {
           setCharList={this.setCharList}
           setLoader={this.setLoader}
         />
+        <Main charList={this.state.charList} setCharList={this.setCharList} />
       </>
     );
   }
