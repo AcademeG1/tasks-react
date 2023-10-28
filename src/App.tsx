@@ -1,35 +1,38 @@
-import { useState } from 'react';
-import reactLogo from './assets/react.svg';
-import viteLogo from '/vite.svg';
+import { Component } from 'react';
 import './App.css';
+import Header from './components/header/header';
+import { Character } from './types/types';
+import Service from './services/service';
 
-function App() {
-  const [count, setCount] = useState(0);
+class App extends Component {
+  service = new Service();
+  state = { inputString: '', charList: [] as Character[], loader: true };
+  searchQuery = localStorage.getItem('search-query');
 
-  return (
-    <>
-      <div>
-        <a href="https://vitejs.dev" target="_blank" rel="noreferrer">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank" rel="noreferrer">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  );
+  setInputString = (newString: string) => {
+    this.setState((prevState) => ({ ...prevState, inputString: newString }));
+  };
+
+  setCharList = (charList: Character[]) => {
+    this.setState((prevState) => ({ ...prevState, charList: charList }));
+  };
+
+  setLoader = (flag: boolean) => {
+    this.setState((prevState) => ({ ...prevState, loader: flag }));
+  };
+
+  render() {
+    return (
+      <>
+        <Header
+          inputString={this.state.inputString}
+          setInputString={this.setInputString}
+          setCharList={this.setCharList}
+          setLoader={this.setLoader}
+        />
+      </>
+    );
+  }
 }
 
 export default App;
