@@ -10,20 +10,25 @@ class Main extends Component<{
   render() {
     return (
       <div className="container">
-        {this.props.charList.map(
-          ({ name, height, hair_color, mass, gender, eye_color }, index) => (
-            <Char
-              key={index}
-              nameChar={name}
-              height={height}
-              hair_color={hair_color}
-              mass={mass}
-              gender={gender}
-              eye_color={eye_color}
-              index={++index}
-            />
-          )
-        )}
+        {this.props.charList.length == 0
+          ? 'There are no such characters :('
+          : this.props.charList.map(
+              (
+                { name, height, hair_color, mass, gender, eye_color },
+                index
+              ) => (
+                <Char
+                  key={index}
+                  nameChar={name}
+                  height={height}
+                  hair_color={hair_color}
+                  mass={mass}
+                  gender={gender}
+                  eye_color={eye_color}
+                  index={++index}
+                />
+              )
+            )}
       </div>
     );
   }
