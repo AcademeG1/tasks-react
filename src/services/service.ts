@@ -1,7 +1,7 @@
 import { AllCharacters } from '../types/types';
 
-class Service {
-  getResources = async (url: string) => {
+const Service = () => {
+  const getResources = async (url: string) => {
     const res = await fetch(url);
 
     if (!res.ok) {
@@ -11,19 +11,23 @@ class Service {
     return await res.json();
   };
 
-  getAllCharacters = async (): Promise<AllCharacters> => {
-    const res = (await this.getResources(
+  const getAllCharacters = async (): Promise<AllCharacters> => {
+    const res = (await getResources(
       `https://swapi.dev/api/people`
     )) as AllCharacters;
     return res;
   };
 
-  getSearchCharacter = async (nameSearch: string): Promise<AllCharacters> => {
-    const res = (await this.getResources(
+  const getSearchCharacter = async (
+    nameSearch: string
+  ): Promise<AllCharacters> => {
+    const res = (await getResources(
       `https://swapi.dev/api/people/?search=${nameSearch}`
     )) as AllCharacters;
     return res;
   };
-}
+
+  return { getResources, getAllCharacters, getSearchCharacter };
+};
 
 export default Service;

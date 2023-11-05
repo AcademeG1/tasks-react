@@ -1,38 +1,38 @@
-import { ChangeEvent, Component } from 'react';
+import { ChangeEvent } from 'react';
 import Service from '../../services/service';
 import './header.css';
-import { Character } from '../../types/types';
-class Header extends Component<{
-  inputString: string;
-  setInputString: (newString: string) => void;
-  setCharList: (charList: Character[]) => void;
-  setLoader: (flag: boolean) => void;
-}> {
-  service = new Service();
-  handlerChange = (event: ChangeEvent<HTMLInputElement>) =>
-    this.props.setInputString(event.target.value);
+import { HeaderProps } from '../../types/types';
 
-  handlerButtonClick = () => {
-    localStorage.setItem('search-query', this.props.inputString);
-    this.props.setLoader(true);
-    this.service.getSearchCharacter(this.props.inputString).then((item) => {
-      this.props.setCharList(item.results);
-      this.props.setLoader(false);
+const Header = ({
+  inputString,
+  setInputString,
+  setCharList,
+  setLoader,
+}: HeaderProps): JSX.Element => {
+  const { getSearchCharacter } = Service();
+
+  const handlerChange = (event: ChangeEvent<HTMLInputElement>) =>
+    setInputString(event.target.value);
+
+  const handlerButtonClick = () => {
+    localStorage.setItem('search-query', inputString);
+    setLoader(true);
+    getSearchCharacter(inputString).then((item) => {
+      setCharList(item.results);
+      setLoader(false);
     });
   };
-  render() {
-    return (
-      <div className="header">
-        <input
-          type="text"
-          onChange={this.handlerChange}
-          placeholder="name to search"
-          value={this.props.inputString!}
-        />
-        <button onClick={this.handlerButtonClick}>search</button>
-      </div>
-    );
-  }
-}
+  return (
+    <div className="header">
+      <input
+        type="text"
+        onChange={handlerChange}
+        placeholder="name to search"
+        value={inputString}
+      />
+      <button onClick={handlerButtonClick}>search</button>
+    </div>
+  );
+};
 
 export default Header;

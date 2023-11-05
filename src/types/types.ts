@@ -33,3 +33,23 @@ export interface CharacterProps {
   eye_color: string;
   index: number;
 }
+export interface CharProps {
+  nameChar: string;
+  height: string;
+  hair_color: string;
+  mass: string;
+  gender: string;
+  eye_color: string;
+  index: string;
+}
+
+export interface HeaderProps {
+  inputString: string;
+  setInputString: (newString: string) => void;
+  setCharList: (charList: Character[]) => void;
+  setLoader: (flag: boolean) => void;
+}
+
+export interface MainProps {
+  charList: Character[];
+}

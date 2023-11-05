@@ -1,4 +1,4 @@
-import { Component } from 'react';
+import { useEffect, useState } from 'react';
 import './App.css';
 import Header from './components/header/header';
 import Main from './components/main/main';
@@ -7,77 +7,60 @@ import Service from './services/service';
 import Spinner from './components/Spinner/Spinner';
 import ErrorBoundary from './components/errorBoundary/ErrorBoundary';
 
-class App extends Component {
-  service = new Service();
-  state = { inputString: '', charList: [] as Character[], loader: true };
-  searchQuery = localStorage.getItem('search-query');
+const App = () => {
+  const { getAllCharacters, getSearchCharacter } = Service();
+  const [inputString, setInputString] = useState('');
+  const [charList, setCharList] = useState<Character[]>([]);
+  const [loader, setLoader] = useState(true);
+  const [searchQuery, setSearchQuery] = useState(
+    localStorage.getItem('search-query') || ''
+  );
 
-  setInputString = (newString: string) => {
-    this.setState((prevState) => ({ ...prevState, inputString: newString }));
-  };
-
-  setCharList = (charList: Character[]) => {
-    this.setState((prevState) => ({ ...prevState, charList: charList }));
-  };
-
-  setLoader = (flag: boolean) => {
-    this.setState((prevState) => ({ ...prevState, loader: flag }));
-  };
-
-  componentDidMount(): void {
-    if (this.searchQuery !== null && this.searchQuery !== '') {
-      this.setState({ inputString: this.searchQuery }, () => {
-        this.service.getSearchCharacter(this.state.inputString).then((item) => {
-          this.setState((prevState) => ({
-            ...prevState,
-            charList: item.results,
-          }));
-          this.setState((prevState) => ({ ...prevState, loader: false }));
-        });
-      });
+  useEffect(() => {
+    if (searchQuery !== '') {
+      setInputString(searchQuery);
+      setSearchQuery;
+      getSearchCharacter(localStorage.getItem('search-query') || '').then(
+        (item) => {
+          setCharList(item.results);
+          setLoader(false);
+        }
+      );
     } else {
-      this.service.getAllCharacters().then((item) => {
-        this.setState((prevState) => ({
-          ...prevState,
-          charList: item.results,
-        }));
-        this.setState((prevState) => ({ ...prevState, loader: false }));
+      getAllCharacters().then((item) => {
+        setCharList(item.results);
+        setLoader(false);
       });
     }
-  }
+  }, []);
 
-  render() {
-    return (
-      <>
+  return (
+    <>
+      <ErrorBoundary>
+        <Header
+          inputString={inputString}
+          setInputString={setInputString}
+          setCharList={setCharList}
+          setLoader={setLoader}
+        />
+      </ErrorBoundary>
+      {loader ? (
+        <Spinner />
+      ) : (
         <ErrorBoundary>
-          <Header
-            inputString={this.state.inputString}
-            setInputString={this.setInputString}
-            setCharList={this.setCharList}
-            setLoader={this.setLoader}
-          />
+          <button
+            className="btn_error"
+            onClick={() => {
+              throw new Error('намеренная ошибка для теста');
+            }}
+          >
+            Create Error
+          </button>
+          <Main charList={charList} />
         </ErrorBoundary>
-        {this.state.loader ? (
-          <Spinner />
-        ) : (
-          <ErrorBoundary>
-            <button
-              className="btn_error"
-              onClick={() => {
-                throw new Error('намеренная ошибка для теста');
-              }}
-            >
-              Create Error
-            </button>
-            <Main
-              charList={this.state.charList}
-              setCharList={this.setCharList}
-            />
-          </ErrorBoundary>
-        )}
-      </>
-    );
-  }
-}
+      )}
+    </>
+  );
+};
 
 export default App;
