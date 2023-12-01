@@ -2,6 +2,7 @@ import { ChangeEvent } from 'react';
 import Service from '../../services/service';
 import './header.css';
 import { HeaderProps } from '../../types/types';
+import ErrorButton from '../errorButton/errorButton';
 
 const Header = ({
   inputString,
@@ -31,6 +32,7 @@ const Header = ({
         value={inputString}
       />
       <button onClick={handlerButtonClick}>search</button>
+      <ErrorButton />
     </div>
   );
 };

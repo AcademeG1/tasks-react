@@ -1,0 +1,26 @@
+.btn_error:hover {
+  transition: 0.5s all;
+  box-shadow: 0 0 0px 5px #93d120;
+  border-radius: 20px;
+}
+
+.btn_error {
+  transition: 0.5s all;
+  background-color: #93d120;
+  color: rgba(40, 40, 40, 0.601);
+}
+
+.btn_error {
+  display: block;
+  width: 160px;
+  height: 40px;
+  background-color: #baff39;
+  border: none;
+  text-align: center;
+  color: black;
+  cursor: pointer;
+  border-radius: 10px;
+  text-transform: uppercase;
+  transition: 0.5s all;
+  margin-left: 10px;
+}
